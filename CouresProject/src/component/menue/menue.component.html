@@ -1,8 +1,11 @@
-<header>
+<mat-toolbar color="primary">
     <nav>
-        <a routeLink="">home</a>
-        <a routeLink="">cousers</a>
-        <a routeLink="">lessons</a>
-        
+      <a mat-button routerLink="/"routerLinkActive="buttonactive">Home</a>
+      <a mat-button routerLink="/courses">Courses</a>
+      <a mat-button routerLink="/lesson">Lessons</a>
+      <a mat-button routerLink="/login"routerLinkActive="buttonactive">Login</a>
+      <!-- <a mat-button routerLink="/register">Register</a> -->
+      <a mat-button routerLink="/logout" routerLinkActive="buttonactive">Logout</a>
     </nav>
-</header>
+</mat-toolbar>
+<router-outlet></router-outlet>

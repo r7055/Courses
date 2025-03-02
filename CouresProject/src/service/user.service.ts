@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { UserType } from '../models/userType';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpClientModule } from '@angular/common/http';
 import { baseUrl } from './env';
 
 @Injectable({
@@ -9,7 +9,7 @@ import { baseUrl } from './env';
 })
 export class UserService {
   private usersSubject=new BehaviorSubject<UserType[]>([])
-  users$=this.usersSubject.asObservable()
+  public  users$=this.usersSubject.asObservable()
   constructor(private http:HttpClient) { }
 
   getUsers():any{

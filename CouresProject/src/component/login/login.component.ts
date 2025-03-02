@@ -5,18 +5,20 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { UserService } from '../../service/user.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [MatInputModule, MatFormFieldModule, MatIconModule, MatButtonModule,MatCardModule, ReactiveFormsModule],
+  imports: [HttpClientModule, MatInputModule, MatFormFieldModule, MatIconModule, MatButtonModule,MatCardModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   isRegister = false;
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder ) { }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -34,12 +36,13 @@ export class LoginComponent implements OnInit {
     const isValidLength = password.length >= 9;
 
     if (hasUpperCase && hasLowerCase && hasNumber && isValidLength) {
-      return null; // valid
+      return null;
     }
-    return { 'passwordStrength': true }; // invalid
+    return { 'passwordStrength': true }; 
   }
   onSubmit() {
     console.log('Form Submitted!', this.loginForm.value);
+    //this.loginService.addUser(this.loginForm.value)
   }
   toggleRegister() {
     this.isRegister = !this.isRegister;
