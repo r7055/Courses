@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Route } from '@angular/router';
+import { log } from 'console';
+import { LoginComponent } from '../login/login.component';
 
 @Component({
   selector: 'app-menue',
@@ -10,6 +12,6 @@ import { Route } from '@angular/router';
 })
 export class MenueComponent {
 routes:Route={
-  {path:"/home"Component:}
+  // {path:"/home",Component:LoginComponent}
 }
 }
