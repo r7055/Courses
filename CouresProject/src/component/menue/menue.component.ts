@@ -23,11 +23,12 @@ import { Component } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-menue',
   standalone: true,
-  imports: [MatToolbarModule, MatButtonModule,RouterOutlet,RouterLink,RouterLinkActive], 
+  imports: [MatToolbarModule, MatButtonModule,RouterOutlet,RouterLink,RouterLinkActive,HttpClientModule], 
   templateUrl: './menue.component.html',
   styleUrl: './menue.component.css'
 })

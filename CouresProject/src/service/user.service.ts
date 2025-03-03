@@ -1,32 +1,53 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { UserType } from '../models/userType';
-import { HttpClient,HttpClientModule } from '@angular/common/http';
 import { baseUrl } from './env';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private usersSubject=new BehaviorSubject<UserType[]>([])
-  public  users$=this.usersSubject.asObservable()
-  constructor(private http:HttpClient) { }
+  // אתחול BehaviorSubject עם מערך ריק
+  private usersSubject = new BehaviorSubject<UserType[]>([]);
+  users$ = this.usersSubject.asObservable();
 
-  getUsers():any{
-    this.http.get(`${baseUrl}/users`).subscribe(users=> users)
+  constructor(private http: HttpClient) { }
+
+  private createAuthorizationHeader(token: string): HttpHeaders {
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
   }
-  getUserById(id:number){
-    this.http.get(`${baseUrl}/users/${id}`)
+
+  getUsers(token: string): Observable<UserType[]> {
+    return this.http.get<UserType[]>(`${baseUrl}/users`, { headers: this.createAuthorizationHeader(token) }).pipe(
+      catchError(error => this.handleError(error, 'fetching users'))
+    );
   }
-  updateUserDeiteles(id:number,user:UserType)
-  {
-    this.http.put(`${baseUrl}/users/${id}`,user).subscribe(id=>id)///submit thiout id !!!!!!
+
+  getUserById(id: number, token: string): Observable<UserType> {
+    return this.http.get<UserType>(`${baseUrl}/users/${id}`, { headers: this.createAuthorizationHeader(token) }).pipe(
+      catchError(error => this.handleError(error, `fetching user with id ${id}`))
+    );
   }
-  addUser(user:UserType)
-  {
-    this.http.post(`${baseUrl}/auth/register`,user).subscribe(user=>user)
+
+  updateUserDetails(id: number, user: UserType, token: string): Observable<UserType> {
+    return this.http.put<UserType>(`${baseUrl}/users/${id}`, user, { headers: this.createAuthorizationHeader(token) }).pipe(
+      catchError(error => this.handleError(error, `updating user with id ${id}`))
+    );
   }
-  deleteById(id:number){
-    this.http.delete(`${baseUrl}/users/${id}`).subscribe(id=>console.log("this user deleted"+id));
+
+  deleteById(id: number, token: string): Observable<void> {
+    return this.http.delete<void>(`${baseUrl}/users/${id}`, { headers: this.createAuthorizationHeader(token) }).pipe(
+      catchError(error => this.handleError(error, `deleting user with id ${id}`))
+    );
+  }
+
+  private handleError(error: any, operation: string) {
+    console.error(`Error ${operation}:`, error);
+    // ניתן להחזיר הודעת שגיאה ידידותית למשתמש או Observable עם שגיאה ספציפית
+    return throwError('משהו השתבש; בבקשה נסה שוב מאוחר יותר.');
   }
 }

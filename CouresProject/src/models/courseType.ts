@@ -1,4 +1,4 @@
-export class courseTpe{
+export class courseType{
     constructor(
         public id:number,
         public title:string,
@@ -6,3 +6,5 @@ export class courseTpe{
         public teacheId:number
     ){}
 }
+
+  
