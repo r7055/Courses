@@ -3,7 +3,7 @@ export class courseType{
         public id:number,
         public title:string,
         public description:string,
-        public teacheId:number
+        public teacherId:number
     ){}
 }
 

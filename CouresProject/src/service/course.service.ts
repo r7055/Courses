@@ -21,29 +21,43 @@ export class CourseService {
   }
 
   getCourses(): Observable<courseType[]> {
-    return this.http.get<courseType[]>(baseUrl, { headers: this.getHeaders() })
+    return this.http.get<courseType[]>(`${baseUrl}/courses`, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
 
   getCourseTypeById(id: number): Observable<courseType> {
-    return this.http.get<courseType>(`${baseUrl}/${id}`, { headers: this.getHeaders() })
+    return this.http.get<courseType>(`${baseUrl}/courses/${id}`, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
 
   createCourse(course: courseType): Observable<courseType> {
-    return this.http.post<courseType>(baseUrl, course, { headers: this.getHeaders() })
+    console.log("create", course, this.getHeaders());
+    return this.http.post<courseType>(`${baseUrl}/courses`, course, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
 
   updateCourse(id: number, course: courseType): Observable<courseType> {
-    return this.http.put<courseType>(`${baseUrl}/${id}`, course, { headers: this.getHeaders() })
+    const headers = this.getHeaders(); // קבל את הכותרות הנדרשות
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      headers.append('Authorization', `Bearer ${token}`); // הוסף את ה-Token לכותרת
+    }
+    
+    return this.http.put<courseType>(`${baseUrl}/courses/${id}`, course, { headers: headers })
       .pipe(catchError(this.handleError));
   }
 
   deleteCourse(id: number): Observable<void> {
-    return this.http.delete<void>(`${baseUrl}/${id}`, { headers: this.getHeaders() })
+    const headers = this.getHeaders(); // קבל את הכותרות הנדרשות
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      headers.append('Authorization', `Bearer ${token}`); // הוסף את ה-Token לכותרת
+    }
+
+    return this.http.delete<void>(`${baseUrl}/courses/${id}`, { headers: headers })
       .pipe(catchError(this.handleError));
   }
+
 
   private handleError(error: any): Observable<never> {
     console.error('An error occurred', error);

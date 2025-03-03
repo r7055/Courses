@@ -9,12 +9,25 @@ import { baseUrl } from './env';
   providedIn: 'root'
 })
 export class UserService {
-  // אתחול BehaviorSubject עם מערך ריק
-  private usersSubject = new BehaviorSubject<UserType[]>([]);
-  users$ = this.usersSubject.asObservable();
 
-  constructor(private http: HttpClient) { }
+  private userSubject = new BehaviorSubject<UserType | null>(null);
+  user$ = this.userSubject.asObservable();
+  
+  setUser(user: UserType) {
+    this.userSubject.next(user);
+  }
 
+  clearUser() {
+    this.userSubject.next(null);
+  }
+  // // אתחול BehaviorSubject עם מערך ריק
+  // private usersSubject = new BehaviorSubject<UserType[]>([]);
+  // users$ = this.usersSubject.asObservable();
+
+
+  constructor(private http: HttpClient) {
+    console.log("ctor user", this.user$);
+  }
   private createAuthorizationHeader(token: string): HttpHeaders {
     return new HttpHeaders({
       'Authorization': `Bearer ${token}`

@@ -1,0 +1,17 @@
+h1 {
+    display: flex;
+    align-items: center;
+  }
+  
+  mat-icon {
+    margin-right: 8px;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  mat-dialog-content {
+    padding: 20px;
+  }
+  
