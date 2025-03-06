@@ -19,11 +19,13 @@
 //   title = 'CouresProject';
 
 // }
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { LoginComponent } from '../login/login.component';
 
 @Component({
   selector: 'app-menue',
@@ -32,6 +34,14 @@ import { HttpClientModule } from '@angular/common/http';
   templateUrl: './menue.component.html',
   styleUrl: './menue.component.css'
 })
-export class MenueComponent {
-  title = 'CourseProject';
+export class MenueComponent implements OnInit {
+  constructor(private dialog: MatDialog) {}
+
+  ngOnInit() {
+    this.openLoginDialog();
+  }
+
+  openLoginDialog() {
+    this.dialog.open(LoginComponent);
+  }
 }

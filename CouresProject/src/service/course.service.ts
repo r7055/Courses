@@ -25,7 +25,7 @@ export class CourseService {
       .pipe(catchError(this.handleError));
   }
 
-  getCourseTypeById(id: number): Observable<courseType> {
+  getCourseById(id: number): Observable<courseType> {
     return this.http.get<courseType>(`${baseUrl}/courses/${id}`, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
