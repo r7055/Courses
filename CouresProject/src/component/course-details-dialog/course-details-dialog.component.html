@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>פרטי הקורס</h2>
+<mat-dialog-content>
+    <p><strong>שם קורס:</strong> {{ data.title }}</p>
+    <p><strong>תיאור:</strong> {{ data.description }}</p>
+    <p><strong>מזהה מורה:</strong> {{ data.teacherId }}</p>
+    <p><strong>שיעורים:</strong> {{ data.lessons ? data.lessons.join(', ') : 'אין שיעורים' }}</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="close()">סגור</button>
+</mat-dialog-actions>

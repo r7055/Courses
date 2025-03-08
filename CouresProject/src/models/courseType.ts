@@ -5,7 +5,6 @@ export class courseType{
         public description:string,
         public teacherId:number,
         public lessons:string[],
-        public materials:string[]
     ){}
 }
 

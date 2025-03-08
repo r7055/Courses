@@ -1,23 +1,3 @@
-// import { Injectable } from '@angular/core';
-// import { BehaviorSubject } from 'rxjs';
-// import { lessonType } from '../models/lessonType';
-// import { HttpClient } from '@angular/common/http';
-// import { baseUrl } from './env';
-
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class LessonService {
-//   private lessonsSubject=new BehaviorSubject<lessonType[]>([])
-//   lessons$ =this.lessonsSubject.asObservable()
-//   constructor(private http:HttpClient) { }
-
-//   getLessons(courseId:number)
-//   {
-//     this.http.get(`${baseUrl}/courses/${courseId}/lessons`).subscribe(lessons=>this.lessons$)
-//   }
-  
-// }
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
@@ -75,3 +55,54 @@ export class LessonService {
   }
 }
 
+// import { Injectable } from '@angular/core';
+// import { HttpClient, HttpHeaders } from '@angular/common/http';
+// import { Observable, throwError } from 'rxjs';
+// import { catchError } from 'rxjs/operators';
+// import { baseUrl } from './env';
+// import { lessonType } from '../models/lessonType';
+
+// @Injectable({
+//   providedIn: 'root'
+// })
+// export class LessonService {
+
+//   constructor(private http: HttpClient) { }
+
+//   private getHeaders(): HttpHeaders {
+//     const token = localStorage.getItem("authToken");
+//     return new HttpHeaders({
+//       'Authorization': `Bearer ${token}`
+//     });
+//   }
+
+//   getLessons(courseId: number): Observable<lessonType[]> {
+//     return this.http.get<lessonType[]>(`${baseUrl}/courses/${courseId}/lessons`, { headers: this.getHeaders() })
+//       .pipe(catchError(this.handleError));
+//   }
+
+//   getLessonById(courseId: number, id: number): Observable<lessonType> {
+//     return this.http.get<lessonType>(`${baseUrl}/courses/${courseId}/lessons/${id}`, { headers: this.getHeaders() })
+//       .pipe(catchError(this.handleError));
+//   }
+
+//   createLesson(courseId: number, lesson: lessonType): Observable<lessonType> {
+//     return this.http.post<lessonType>(`${baseUrl}/courses/${courseId}/lessons`, lesson, { headers: this.getHeaders() })
+//       .pipe(catchError(this.handleError));
+//   }
+
+//   updateLesson(courseId: number, id: number, lesson: lessonType): Observable<lessonType> {
+//     return this.http.put<lessonType>(`${baseUrl}/courses/${courseId}/lessons/${id}`, lesson, { headers: this.getHeaders() })
+//       .pipe(catchError(this.handleError));
+//   }
+
+//   deleteLesson(courseId: number, id: number): Observable<void> {
+//     return this.http.delete<void>(`${baseUrl}/courses/${courseId}/lessons/${id}`, { headers: this.getHeaders() })
+//       .pipe(catchError(this.handleError));
+//   }
+
+//   private handleError(error: any): Observable<never> {
+//     console.error('An error occurred', error);
+//     return throwError(error);
+//   }
+// }

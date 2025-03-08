@@ -1,116 +1,36 @@
-   <!-- <div>
-    <h1>Courses</h1>
-    <button mat-raised-button color="primary" (click)="openDialog()">
-        <mat-icon>add</mat-icon> Add Course
-    </button>
-    <table mat-table [dataSource]="courses" class="mat-elevation-z8">
-        <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef> Title </th>
-            <td mat-cell *matCellDef="let course"> {{course.title}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef> Description </th>
-            <td mat-cell *matCellDef="let course"> {{course.description}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef> Actions </th>
-            <td mat-cell *matCellDef="let course">
-                <button mat-icon-button (click)="openDialog(course)">
-                    <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-icon-button color="warn" (click)="deleteCourse(course.id)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="['title', 'description', 'actions']"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['title', 'description', 'actions'];"></tr>
-    </table>
-</div> -->
-<div>
-  <h1>Courses</h1>
-  <table mat-table [dataSource]="courses" class="mat-elevation-z8">
+  <div class="course-management">
+  <h2>ניהול קורסים</h2>
+  <button mat-raised-button color="primary" (click)="openDialog()">הוסף קורס חדש</button>
+  <mat-table [dataSource]="courses" class="mat-elevation-z8">
     <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef> Title </th>
-      <td mat-cell *matCellDef="let course"> {{course.title}} </td>
+      <mat-header-cell *matHeaderCellDef> שם קורס </mat-header-cell>
+      <mat-cell *matCellDef="let course"> {{ course.title }} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef> Description </th>
-      <td mat-cell *matCellDef="let course"> {{course.description}} </td>
+      <mat-header-cell *matHeaderCellDef> תיאור </mat-header-cell>
+      <mat-cell *matCellDef="let course"> {{ course.description }} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> Actions </th>
-      <td mat-cell *matCellDef="let course">
-        <button mat-icon-button (click)="toggleCourseDetails(course.id)">
-          <mat-icon>{{ expandedCourseId === course.id ? 'expand_less' : 'expand_more' }}</mat-icon>
+      <mat-header-cell *matHeaderCellDef> פעולות </mat-header-cell>
+      <mat-cell *matCellDef="let course">
+        <button mat-icon-button (click)="openCourseDetails(course)">
+          <mat-icon>expand_more</mat-icon>
+          <!-- <mat-icon>{{ expandedCourseId === course.id ? 'expand_less' : 'expand_more' }}</mat-icon> -->
+
         </button>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="['title', 'description', 'actions']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['title', 'description', 'actions'];"></tr>
-  </table>
-
-  <ng-container *ngFor="let course of courses">
-    <div *ngIf="expandedCourseId === course.id" class="course-details">
-      <h2>{{ course.title }} Details</h2>
-      <p>Description: {{ course.description }}</p>
-      <h3>Lessons:</h3>
-      <ul>
-        <li *ngFor="let lesson of course.lessons">{{ lesson }}</li>
-      </ul>
-      <h3>Materials:</h3>
-      <!-- <button mat-button (click)="downloadMaterials(course.id)">Download Materials</button> -->
-    </div>
-  </ng-container>
-</div>
-
-<!-- <div>
-  <h1>Courses</h1>
-  <button mat-raised-button color="primary" (click)="openDialog()">
-      <mat-icon>add</mat-icon> Add Course
-  </button>
-  <table mat-table [dataSource]="courses" class="mat-elevation-z8">
-    <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef> Title </th>
-      <td mat-cell *matCellDef="let course"> {{course.title}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef> Description </th>
-      <td mat-cell *matCellDef="let course"> {{course.description}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> Actions </th>
-      <td mat-cell *matCellDef="let course">
         <button mat-icon-button (click)="openDialog(course)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="warn" (click)="deleteCourse(course.id)">
+        <button mat-icon-button (click)="deleteCourse(course.id)">
           <mat-icon>delete</mat-icon>
         </button>
-      </td>
+      </mat-cell>
+      
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="['title', 'description', 'actions']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['title', 'description', 'actions'];"></tr>
-  </table>
-
-  <ng-container *ngFor="let course of courses">
-    <div *ngIf="expandedCourseId === course.id" class="course-details">
-      <h2>{{ course.title }} Details</h2>
-      <p>Description: {{ course.description }}</p>
-      <h3>Lessons:</h3>
-      <ul>
-        <li *ngFor="let lesson of course.lessons">{{ lesson }}</li>
-      </ul>
-    </div>
-  </ng-container>
+    <mat-header-row *matHeaderRowDef="['title', 'description', 'actions']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['title', 'description', 'actions'];"></mat-row>
+  </mat-table>
 </div>
- -->
