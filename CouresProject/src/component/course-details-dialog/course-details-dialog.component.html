@@ -1,10 +1,20 @@
-<h2 mat-dialog-title>פרטי הקורס</h2>
-<mat-dialog-content>
+<mat-dialog-content class="dialog-content">
+    <h2 mat-dialog-title class="dialog-title">פרטי הקורס</h2>
     <p><strong>שם קורס:</strong> {{ data.title }}</p>
     <p><strong>תיאור:</strong> {{ data.description }}</p>
     <p><strong>מזהה מורה:</strong> {{ data.teacherId }}</p>
-    <p><strong>שיעורים:</strong> {{ data.lessons ? data.lessons.join(', ') : 'אין שיעורים' }}</p>
+    <p><strong>שיעורים:</strong></p>
+    <div *ngIf="data.lessons && data.lessons.length > 0">
+        <mat-card *ngFor="let lesson of data.lessons" class="lesson-card">
+            <mat-card-header>
+                <mat-icon>book</mat-icon>
+                <mat-card-title>{{ lesson.title }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>{{ lesson.content }}</p>
+                <button mat-button class="button" (click)="downloadMaterials(lesson)">הורד חומרים</button>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <p><span *ngIf="!data.lessons || data.lessons.length === 0">אין שיעורים</span></p>
 </mat-dialog-content>
-<mat-dialog-actions>
-    <button mat-button (click)="close()">סגור</button>
-</mat-dialog-actions>

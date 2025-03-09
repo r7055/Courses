@@ -1,0 +1,15 @@
+@include mat-core();
+
+$primary: mat-palette($mat-indigo);
+$accent: mat-palette($mat-pink);
+$warn: mat-palette($mat-red);
+
+$theme: mat-light-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn,
+  )
+));
+
+@include angular-material-theme($theme);

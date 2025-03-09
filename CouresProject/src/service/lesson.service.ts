@@ -10,7 +10,7 @@ import { baseUrl } from './env'; // Assuming you have a base URL defined
 })
 export class LessonService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem("authToken");
@@ -19,12 +19,11 @@ export class LessonService {
     });
   }
 
-  // 1. GET all lessons for a specific course
   getLessons(courseId: number): Observable<lessonType[]> {
     return this.http.get<lessonType[]>(`${baseUrl}/courses/${courseId}/lessons`, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
-
+  
   // 2. GET a lesson by ID
   getLessonById(courseId: number, lessonId: number): Observable<lessonType> {
     return this.http.get<lessonType>(`${baseUrl}/courses/${courseId}/lessons/${lessonId}`, { headers: this.getHeaders() })
@@ -39,6 +38,8 @@ export class LessonService {
 
   // 4. PUT (update) a lesson by ID
   updateLesson(courseId: number, lessonId: number, lesson: lessonType): Observable<lessonType> {
+    console.log("courseid", courseId, lessonId, lesson);
+
     return this.http.put<lessonType>(`${baseUrl}/courses/${courseId}/lessons/${lessonId}`, lesson, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }

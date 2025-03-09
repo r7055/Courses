@@ -81,8 +81,8 @@ export class CourseDetailsDirective implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.courseService.getCourseById(this.courseId).subscribe(course => {
-      this.viewContainer.createEmbeddedView(this.templateRef, { $implicit: course });
-    });
+    // this.courseService.getCourseById(this.courseId).subscribe(course => {
+    //   this.viewContainer.createEmbeddedView(this.templateRef, { $implicit: course });
+    // });
   }
 }

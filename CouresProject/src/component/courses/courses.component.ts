@@ -70,13 +70,12 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { courseType } from '../../models/courseType';
 import { CourseService } from '../../service/course.service';
-import { LessonService } from '../../service/lesson.service'; // הוספת השירות
+import { LessonService } from '../../service/lesson.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { CourseEditComponent } from '../course-edit/course-edit.component';
-import { lessonType } from '../../models/lessonType';
 import { CourseDetailsDialogComponent } from '../course-details-dialog/course-details-dialog.component';
 
 @Component({
@@ -88,8 +87,7 @@ import { CourseDetailsDialogComponent } from '../course-details-dialog/course-de
 })
 export class CoursesComponent implements OnInit {
   courses: courseType[] = [];
-  lessons: lessonType[] = []; // הוספת מערך שיעורים
-
+  
   constructor(private courseService: CourseService, private lessonService: LessonService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
@@ -99,30 +97,31 @@ export class CoursesComponent implements OnInit {
   loadCourses(): void {
     this.courseService.getCourses().subscribe(courses => {
       this.courses = courses;
+      this.courses.forEach(course => this.loadLessons(course.id));
     });
   }
 
   loadLessons(courseId: number): void {
     this.lessonService.getLessons(courseId).subscribe(lessons => {
-      this.lessons = lessons; // עדכון מערך השיעורים
+      const course = this.courses.find(c => c.id === courseId);
+      if (course) {
+        course.lessons = lessons; // Update the lessons of the course
+      }
     });
   }
 
   openDialog(course?: courseType): void {
     const dialogRef = this.dialog.open(CourseEditComponent, {
-      data: course || { lessons: [] } // אם אין קורס, ניצור אובייקט חדש
+      data: course || { lessons: [] }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (result.id) {
-          // אם קיים מזהה, נעדכן את הקורס
           this.courseService.updateCourse(result.id, result, result.lessons).subscribe(() => {
             this.loadCourses();
-            this.loadLessons(result.id); // טען את השיעורים לאחר העדכון
           });
         } else {
-          // אם אין מזהה, ניצור קורס חדש
           this.courseService.createCourse(result, result.lessons).subscribe(() => {
             this.loadCourses();
           });
