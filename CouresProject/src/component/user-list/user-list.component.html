@@ -10,7 +10,8 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let user of users">
+    <tr>
+    @for(user of users;track user.id){
       <td>{{ user.name }}</td>
       <td>{{ user.email }}</td>
       <td>{{ user.role }}</td>
@@ -18,6 +19,7 @@
         <!-- <a [routerLink]="['/edit', user.id]">Edit</a> -->
         <!-- <button (click)="deleteUser(user.id)">Delete</button> -->
       </td>
+    }
     </tr>
   </tbody>
 </table>

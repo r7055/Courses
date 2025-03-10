@@ -34,14 +34,11 @@ import { LoginComponent } from '../login/login.component';
   templateUrl: './menue.component.html',
   styleUrl: './menue.component.css'
 })
-export class MenueComponent implements OnInit {
+export class MenueComponent  {
   constructor(private dialog: MatDialog) {}
 
-  ngOnInit() {
-    this.openLoginDialog();
-  }
+ 
 
-  openLoginDialog() {
-    this.dialog.open(LoginComponent);
-  }
+  
+
 }

@@ -146,6 +146,11 @@ export class CourseService {
       .pipe(catchError(this.handleError));
   }
 
+  getCoursesByStudentId(studentId: string): Observable<courseType[]> {
+    return this.http.get<courseType[]>(`${baseUrl}/courses/student/${studentId}`, { headers: this.getHeaders() }).pipe(
+      catchError(this.handleError)
+    );
+  }
   createCourse(course: courseType, lessons: lessonType[]): Observable<courseType> {
     return this.http.post<courseType>(`${baseUrl}/courses`, course, { headers: this.getHeaders() })
       .pipe(
@@ -160,7 +165,23 @@ export class CourseService {
       );
   }
 
+   private deleteLessons(courseId: number): Observable<void[]> {
+    // קודם כל, נקבל את כל השיעורים של הקורס
+    return this.lessonService.getLessons(courseId).pipe(
+      switchMap(lessons => {
+        // ניצור מערך של בקשות מחיקה לשיעורים
+        const deleteRequests = lessons.map(lesson =>
+          this.lessonService.deleteLesson(courseId, lesson.id)
+        );
+        // נחזיר את התוצאה של כל הבקשות
+        return forkJoin(deleteRequests);
+      }),
+      catchError(this.handleError)
+    );
+  }
+
   deleteCourse(id: number): Observable<void> {
+    this.deleteLessons(id);
     return this.http.delete<void>(`${baseUrl}/courses/${id}`, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }

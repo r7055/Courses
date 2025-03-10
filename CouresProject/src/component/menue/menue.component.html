@@ -1,13 +1,11 @@
 <mat-toolbar color="primary">
-    <nav>
-      <a mat-button routerLink="/"routerLinkActive="buttonactive">Home</a>
-      <a mat-button routerLink="/courses">Courses</a>
-      <a mat-button routerLink="/join">My courses</a>
-      <a mat-button routerLink="/login"routerLinkActive="buttonactive">Login</a>
-      <!-- <a mat-button routerLink="/register">Register</a> -->
-      <a mat-button routerLink="/logout" routerLinkActive="buttonactive">Logout</a>
-    </nav>
+  <nav>
+    <a mat-button routerLink="/menu" routerLinkActive="buttonactive">Home</a>
+    <a mat-button routerLink="/menu/courses" routerLinkActive="buttonactive">Courses</a>
+    <a mat-button routerLink="/menu/my-courses" routerLinkActive="buttonactive">My Courses</a>
+    <!-- <a mat-button routerLink="/menu/login" routerLinkActive="buttonactive">Login</a> -->
+  </nav>  
 </mat-toolbar>
 
-
+<h1>Home</h1>
 <router-outlet></router-outlet>

@@ -2,25 +2,30 @@
     <div>
       <label for="name">Name</label>
       <input id="name" formControlName="name" required>
-      <div *ngIf="editForm.get('name').invalid && editForm.get('name').touched">
-        Name is required.
-      </div>
+      @if(editForm.get('name')?.invalid && editForm.get('name')?.touched)
+      {
+        <div >
+          Name is required.
+        </div>
+      }
     </div>
   
     <div>
       <label for="email">Email</label>
       <input id="email" formControlName="email" required>
-      <div *ngIf="editForm.get('email').invalid && editForm.get('email').touched">
-        Valid email is required.
-      </div>
+      @if(editForm.get('email')?.invalid && editForm.get('email')?.touched){
+        <div > Valid email is required. </div>
+      }
     </div>
   
     <div>
       <label for="password">Password</label>
       <input type="password" id="password" formControlName="password" required>
-      <div *ngIf="editForm.get('password').invalid && editForm.get('password').touched">
-        Password is required.
-      </div>
+      @if(editForm.get('password')?.invalid && editForm.get('password')?.touched){
+        <div >
+          Password is required.
+        </div>
+      }
     </div>
   
     <div>

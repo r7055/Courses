@@ -196,7 +196,12 @@ export class LoginComponent {
   }
 
   private closeDialogAndNavigate() {
+    console.log("login1");
+
     this.dialogRef.close();
-    this.router.navigate(['/courses']);
+    console.log("login2");
+
+    this.router.navigate(['/menu']);
+    console.log("login3");
   }
 }
