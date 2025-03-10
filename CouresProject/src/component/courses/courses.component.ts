@@ -1,8 +1,8 @@
-
 // import { Component, OnInit } from '@angular/core';
 // import { MatDialog } from '@angular/material/dialog';
 // import { courseType } from '../../models/courseType';
 // import { CourseService } from '../../service/course.service';
+// import { LessonService } from '../../service/lesson.service';
 // import { MatButtonModule } from '@angular/material/button';
 // import { MatIconModule } from '@angular/material/icon';
 // import { CommonModule } from '@angular/common';
@@ -20,7 +20,7 @@
 // export class CoursesComponent implements OnInit {
 //   courses: courseType[] = [];
 
-//   constructor(private courseService: CourseService, public dialog: MatDialog) {}
+//   constructor(private courseService: CourseService, private lessonService: LessonService, public dialog: MatDialog) { }
 
 //   ngOnInit(): void {
 //     this.loadCourses();
@@ -29,43 +29,75 @@
 //   loadCourses(): void {
 //     this.courseService.getCourses().subscribe(courses => {
 //       this.courses = courses;
+//       this.courses.forEach(course => this.loadLessons(course.id));
 //     });
 //   }
 
+//   loadLessons(courseId: number): void {
+//     this.lessonService.getLessons(courseId).subscribe(lessons => {
+//       const course = this.courses.find(c => c.id === courseId);
+//       if (course) {
+//         course.lessons = lessons; // Update the lessons of the course
+//       }
+//     });
+//   }
+
+//   // openDialog(course?: courseType): void {
+//   //   const dialogRef = this.dialog.open(CourseEditComponent, {
+//   //     data: course || { lessons: [] } // אם אין קורס, ניצור אובייקט חדש עם שיעורים ריקים
+//   //   });
+
+//   //   dialogRef.afterClosed().subscribe(result => {
+//   //     if (result) {
+//   //       if (result.id) {
+//   //         this.courseService.updateCourse(result.id, result, result.lessons).subscribe(() => {
+//   //           this.loadCourses();
+//   //         });
+//   //       } else {
+//   //         // כאן נוודא שהשיעורים מועברים יחד עם הקורס החדש
+//   //         this.courseService.createCourse(result, result.lessons).subscribe(() => {
+//   //           this.loadCourses();
+//   //         });
+//   //       }
+//   //     }
+//   //   });
+//   // }
 //   openDialog(course?: courseType): void {
 //     const dialogRef = this.dialog.open(CourseEditComponent, {
-//       data: course || { lessons: [] } // אם אין קורס, ניצור אובייקט חדש
+//       data: course || { lessons: [] }
 //     });
 
 //     dialogRef.afterClosed().subscribe(result => {
 //       if (result) {
 //         if (result.id) {
-//           // אם קיים מזהה, נעדכן את הקורס
 //           this.courseService.updateCourse(result.id, result, result.lessons).subscribe(() => {
-//             this.loadCourses();
+//             this.loadCourses(); // טען מחדש את הקורסים
 //           });
 //         } else {
-//           // אם אין מזהה, ניצור קורס חדש
 //           this.courseService.createCourse(result, result.lessons).subscribe(() => {
-//             this.loadCourses();
+//             this.loadCourses(); // טען מחדש את הקורסים
 //           });
 //         }
 //       }
 //     });
 //   }
 
+
 //   openCourseDetails(course: courseType): void {
 //     const dialogRef = this.dialog.open(CourseDetailsDialogComponent, {
 //       data: course
 //     });
 //   }
-  
+
 //   deleteCourse(id: number): void {
 //     this.courseService.deleteCourse(id).subscribe(() => {
 //       this.loadCourses();
 //     });
 //   }
 // }
+
+
+
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { courseType } from '../../models/courseType';
@@ -77,6 +109,7 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { CourseEditComponent } from '../course-edit/course-edit.component';
 import { CourseDetailsDialogComponent } from '../course-details-dialog/course-details-dialog.component';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
@@ -86,26 +119,28 @@ import { CourseDetailsDialogComponent } from '../course-details-dialog/course-de
   styleUrls: ['./courses.component.css']
 })
 export class CoursesComponent implements OnInit {
-  courses: courseType[] = [];
-  
-  constructor(private courseService: CourseService, private lessonService: LessonService, public dialog: MatDialog) {}
+  courses$ = new BehaviorSubject<courseType[]>([]);
+
+  constructor(private courseService: CourseService, private lessonService: LessonService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.loadCourses();
   }
 
   loadCourses(): void {
+    console.log('loadCourses');
     this.courseService.getCourses().subscribe(courses => {
-      this.courses = courses;
-      this.courses.forEach(course => this.loadLessons(course.id));
+      this.courses$.next(courses);
+      courses.forEach(course => this.loadLessons(course.id));
     });
   }
 
   loadLessons(courseId: number): void {
     this.lessonService.getLessons(courseId).subscribe(lessons => {
-      const course = this.courses.find(c => c.id === courseId);
+      const course = this.courses$.getValue().find(c => c.id === courseId);
       if (course) {
-        course.lessons = lessons; // Update the lessons of the course
+        course.lessons = lessons; // עדכון השיעורים של הקורס
+        this.courses$.next(this.courses$.getValue()); // עדכון ה-BehaviorSubject
       }
     });
   }
@@ -119,12 +154,14 @@ export class CoursesComponent implements OnInit {
       if (result) {
         if (result.id) {
           this.courseService.updateCourse(result.id, result, result.lessons).subscribe(() => {
-            this.loadCourses();
+            this.loadCourses(); // טען מחדש את הקורסים
           });
         } else {
-          this.courseService.createCourse(result, result.lessons).subscribe(() => {
-            this.loadCourses();
-          });
+          
+            this.courseService.createCourse(result,result.lessons).subscribe(() => {
+              this.loadCourses();
+            });
+          
         }
       }
     });

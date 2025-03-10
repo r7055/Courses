@@ -35,7 +35,7 @@
 <div class="course-management">
   <h2>ניהול קורסים</h2>
   <button mat-raised-button color="primary" class="button-animation" (click)="openDialog()">הוסף קורס חדש</button>
-  <mat-table [dataSource]="courses" class="mat-elevation-z8">
+  <mat-table [dataSource]="courses$" class="mat-elevation-z8">
     <ng-container matColumnDef="title">
       <mat-header-cell *matHeaderCellDef> שם קורס </mat-header-cell>
       <mat-cell *matCellDef="let course"> {{ course.title }} </mat-cell>

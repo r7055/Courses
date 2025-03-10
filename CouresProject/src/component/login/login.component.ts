@@ -1,100 +1,87 @@
-// // import { Component } from '@angular/core';
-// // import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-// // import { AuthService } from '../../service/auth.service';
-// // import { UserType } from '../../models/userType';
-// // import { MatDialog, MatDialogRef } from '@angular/material/dialog'; // ייבוא MatDialogRef
-// // import { HttpClientModule } from '@angular/common/http';
-// // import { MatInputModule } from '@angular/material/input';
-// // import { MatFormFieldModule } from '@angular/material/form-field';
-// // import { MatIconModule } from '@angular/material/icon';
-// // import { MatButtonModule } from '@angular/material/button';
-// // import { MatCardModule } from '@angular/material/card';
+// import { Component } from '@angular/core';
+// import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+// import { AuthService } from '../../service/auth.service';
+// import { UserType } from '../../models/userType';
+// import { HttpClientModule } from '@angular/common/http';
+// import { MatInputModule } from '@angular/material/input';
+// import { MatFormFieldModule } from '@angular/material/form-field';
+// import { MatIconModule } from '@angular/material/icon';
+// import { MatButtonModule } from '@angular/material/button';
+// import { MatCardModule } from '@angular/material/card';
 
-// // @Component({
-// //   selector: 'app-login',
-// //   standalone: true,
-// //   imports: [ReactiveFormsModule,HttpClientModule, MatInputModule, MatFormFieldModule, MatIconModule, MatButtonModule, MatCardModule, ReactiveFormsModule],
-// //   templateUrl: './login.component.html',
-// //   styleUrls: ['./login.component.css']
-// // })
-// // export class LoginComponent {
-// //   loginForm!: FormGroup;
-// //   isRegister = false;
+// @Component({
+//   selector: 'app-login',
+//   standalone: true,
+//   imports: [HttpClientModule, MatInputModule, MatFormFieldModule, MatIconModule, MatButtonModule, MatCardModule, ReactiveFormsModule],
+//   templateUrl: './login.component.html',
+//   styleUrls: ['./login.component.css']
+// })
+// export class LoginComponent {
+//   loginForm!: FormGroup;
+//   isRegister = false;
 
-// //   constructor(private dialog: MatDialog,private fb: FormBuilder, private authService: AuthService, private dialogRef: MatDialogRef<LoginComponent>) {
-// //     this.loginForm = this.fb.group({
-// //       email: ['', [Validators.required, Validators.email]],
-// //       password: ['', [Validators.required, this.passwordValidator]],
-// //       role: ['student', Validators.required]
-// //     });
-// //   }
-// //   openLoginDialog() {
-// //     this.dialog.open(LoginComponent);
-// //   }
-// //   passwordValidator(control: AbstractControl): { [key: string]: boolean } | null {
-// //     const password = control.value;
-// //     const hasUpperCase = /[A-Z]/.test(password);
-// //     const hasLowerCase = /[a-z]/.test(password);
-// //     const hasNumber = /\d/.test(password);
-// //     const isValidLength = password.length >= 9;
+//   constructor(private fb: FormBuilder, private authService: AuthService) {
+//     this.loginForm = this.fb.group({
+//       email: ['', [Validators.required, Validators.email]],
+//       password: ['', [Validators.required, this.passwordValidator]],
+//       role: ['student', Validators.required]
+//     });
+//   }
 
-// //     if (hasUpperCase && hasLowerCase && hasNumber && isValidLength) {
-// //       return null;
-// //     }
-// //     return { 'passwordStrength': true };
-// //   }
+//   passwordValidator(control: AbstractControl): { [key: string]: boolean } | null {
+//     const password = control.value;
+//     const hasUpperCase = /[A-Z]/.test(password);
+//     const hasLowerCase = /[a-z]/.test(password);
+//     const hasNumber = /\d/.test(password);
+//     const isValidLength = password.length >= 9;
 
-// //   toggleRegister() {
-// //     this.isRegister = !this.isRegister;
-// //     if (this.isRegister) {
-// //       this.loginForm.addControl('name', this.fb.control('', Validators.required));
-// //     } else {
-// //       this.loginForm.removeControl('name');
-// //     }
-// //   }
+//     if (hasUpperCase && hasLowerCase && hasNumber && isValidLength) {
+//       return null;
+//     }
+//     return { 'passwordStrength': true };
+//   }
 
-// //   onSubmit() {
-// //     if (this.loginForm.valid) {
-// //       let user: UserType;
+//   toggleRegister() {
+//     this.isRegister = !this.isRegister;
+//     if (this.isRegister) {
+//       this.loginForm.addControl('name', this.fb.control('', Validators.required));
+//     } else {
+//       this.loginForm.removeControl('name');
+//     }
+//   }
 
-// //       if (this.isRegister) {
-// //         user = {
-// //           name: this.loginForm.value.name,
-// //           email: this.loginForm.value.email,
-// //           password: this.loginForm.value.password,
-// //           role: this.loginForm.value.role
-// //         };
+//   onSubmit() {
+//     if (this.loginForm.valid) {
+//       const user: UserType = this.createUser();
 
-// //         // הרשם את המשתמש
-// //         this.authService.register(user).subscribe(response => {
-// //           console.log('User registered:', response);
-// //           // התחבר אוטומטית לאחר ההרשמה
-// //           this.authService.login(user.email, user.password).subscribe(loginResponse => {
-// //             console.log('User logged in:', loginResponse);
-// //             this.dialogRef.close(); // סגור את הדיאלוג
-// //           }, error => {
-// //             console.error('Login error:', error);
-// //           });
-// //         }, error => {
-// //           console.error('Registration error:', error);
-// //         });
-// //       } else {
-// //         user = {
-// //           email: this.loginForm.value.email,
-// //           password: this.loginForm.value.password,
-// //         };
+//       if (this.isRegister) {
+//         this.authService.register(user).subscribe({
+//           next: response => console.log('User registered:', response),
+//           error: error => console.error('Registration error:', error)
+//         });
+//       } else {
+//         this.authService.login(user.email, user.password).subscribe({
+//           next: response => console.log('User logged in:', response),
+//           error: error => console.error('Login error:', error)
+//         });
+//       }
+//       //here close the dialog and navigate to the courses page
+//     }
+//   }
 
-// //         // התחבר למערכת
-// //         this.authService.login(user.email, user.password).subscribe(response => {
-// //           console.log('User logged in:', response);
-// //           this.dialogRef.close(); // סגור את הדיאלוג
-// //         }, error => {
-// //           console.error('Login error:', error);
-// //         });
-// //       }
-// //     }
-// //   }
-// // }
+//   private createUser(): UserType {
+//     return this.isRegister ? {
+//       name: this.loginForm.value.name,
+//       email: this.loginForm.value.email,
+//       password: this.loginForm.value.password,
+//       role: this.loginForm.value.role
+//     } : {
+//       email: this.loginForm.value.email,
+//       password: this.loginForm.value.password,
+//     };
+//   }
+// }
+
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../service/auth.service';
@@ -105,11 +92,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogRef, MatDialogModule } from '@angular/material/dialog'; // הוספת MatDialogRef
+import { Router } from '@angular/router';
+import { UserService } from '../../service/user.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [HttpClientModule, MatInputModule, MatFormFieldModule, MatIconModule, MatButtonModule, MatCardModule, ReactiveFormsModule],
+  imports: [HttpClientModule, MatInputModule, MatFormFieldModule, MatIconModule, MatButtonModule, MatCardModule, ReactiveFormsModule, MatDialogModule], 
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -117,7 +107,13 @@ export class LoginComponent {
   loginForm!: FormGroup;
   isRegister = false;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(
+    private fb: FormBuilder, 
+    private authService: AuthService, 
+    private dialogRef: MatDialogRef<LoginComponent>, 
+    private router: Router,
+    private userService: UserService
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, this.passwordValidator]],
@@ -153,16 +149,37 @@ export class LoginComponent {
 
       if (this.isRegister) {
         this.authService.register(user).subscribe({
-          next: response => console.log('User registered:', response),
+          next: response => {
+            if (response.userId && response.token) {
+              const user: UserType = {
+                id: response.userId, email: this.loginForm.value.email, role: response.role as 'student' | 'teacher' | 'admin',
+                password: ''
+              };
+              this.userService.setUser(user, response.token);
+              this.closeDialogAndNavigate();
+            } else {
+              console.error('Registration response does not contain userId or token');
+            }
+          },
           error: error => console.error('Registration error:', error)
         });
       } else {
         this.authService.login(user.email, user.password).subscribe({
-          next: response => console.log('User logged in:', response),
+          next: response => {
+            if (response.userId && response.token) {
+              const user: UserType = {
+                id: response.userId, email: this.loginForm.value.email, role: response.role as 'student' | 'teacher' | 'admin',
+                password: ''
+              };
+              this.userService.setUser(user, response.token);
+              this.closeDialogAndNavigate();
+            } else {
+              console.error('Login response does not contain userId or token');
+            }
+          },
           error: error => console.error('Login error:', error)
         });
       }
-      //here close the dialog and navigate to the courses page
     }
   }
 
@@ -177,6 +194,9 @@ export class LoginComponent {
       password: this.loginForm.value.password,
     };
   }
+
+  private closeDialogAndNavigate() {
+    this.dialogRef.close();
+    this.router.navigate(['/courses']);
+  }
 }
-
-
