@@ -16,7 +16,7 @@ export const authGuard: CanActivateFn = (route, state) => {
     } else {
       router.navigate(['']);
       // Redirect to login if not authenticated
-      alert("You are not allowed, please log in or register");
+      // alert("You are not allowed, please log in or register");
     }
   });
   return isAuthenticated;
