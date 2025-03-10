@@ -14,18 +14,6 @@ export class UserService {
   user$ = this.userSubject.asObservable();
   private tokenKey = 'authToken';
 
-  // setUser(user: UserType) {
-  //   console.log("set user: " + user.id);
-
-  //   this.userSubject.next(user);
-  //   this.user$.subscribe(user => console.log(`set user: ${user?.id}`));
-
-  // }
-
-  // clearUser() {
-  //   this.userSubject.next(null);
-  // }
-
   setUser(user: UserType, token: string) {
     console.log("set user: " + user.id);
     this.userSubject.next(user);
